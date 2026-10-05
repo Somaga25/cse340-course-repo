@@ -42,3 +42,54 @@ VALUES
 (3, 'Winter Coat Drive', 'Collect, clean, and distribute warm coats to families.', 'Unity Hall', '2026-12-19'),
 (3, 'Literacy Tutoring', 'Tutor children in reading and writing skills.', 'Northside Learning Center', '2027-01-23'),
 (3, 'Park Cleanup Day', 'Remove litter and plant flowers in a city park.', 'Lakeside Park', '2027-03-20');
+
+
+-- ========================================
+-- Category Table
+-- ========================================
+CREATE TABLE category (
+    category_id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL UNIQUE
+);
+
+-- ========================================
+-- Project-Category Junction Table (many-to-many)
+-- ========================================
+CREATE TABLE project_category (
+    project_id INTEGER NOT NULL,
+    category_id INTEGER NOT NULL,
+    PRIMARY KEY (project_id, category_id),
+    FOREIGN KEY (project_id) REFERENCES project (project_id),
+    FOREIGN KEY (category_id) REFERENCES category (category_id)
+);
+
+-- ========================================
+-- Insert sample data: Categories
+-- ========================================
+INSERT INTO category (name)
+VALUES
+('Environmental'),
+('Educational'),
+('Community Service'),
+('Health and Wellness');
+
+-- ========================================
+-- Insert sample data: Project-Category associations
+-- ========================================
+INSERT INTO project_category (project_id, category_id)
+VALUES
+(1, 3),          -- Community Center Renovation: Community Service
+(2, 3), (2, 4),  -- Playground Rebuild: Community Service, Health and Wellness
+(3, 3), (3, 4),  -- Wheelchair Ramp Installation: Community Service, Health and Wellness
+(4, 1), (4, 2),  -- Solar Panel Workshop: Environmental, Educational
+(5, 3),          -- Footbridge Repair: Community Service
+(6, 1),          -- Urban Garden Planting: Environmental
+(7, 1), (7, 2),  -- School Composting Program: Environmental, Educational
+(8, 1),          -- Rooftop Farm Build: Environmental
+(9, 1), (9, 2),  -- Seed Library Launch: Environmental, Educational
+(10, 3), (10, 4),-- Harvest Food Share: Community Service, Health and Wellness
+(11, 3),         -- Food Bank Sorting: Community Service
+(12, 4), (12, 3),-- Senior Center Visits: Health and Wellness, Community Service
+(13, 3),         -- Winter Coat Drive: Community Service
+(14, 2),         -- Literacy Tutoring: Educational
+(15, 1), (15, 3);-- Park Cleanup Day: Environmental, Community Service
